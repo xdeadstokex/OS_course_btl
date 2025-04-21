@@ -205,8 +205,10 @@ int vm_map_ram(struct pcb_t *caller, int astart, int aend, int mapstart, int inc
    */
   ret_alloc = alloc_pages_range(caller, incpgnum, &frm_lst);
 
-  if (ret_alloc < 0 && ret_alloc != -3000) return -1;
-
+if (ret_alloc < 0 && ret_alloc != -3000){
+printf("====fail to map mem====\n");
+return -1;
+}
   /* Out of memory */
   if (ret_alloc == -3000){
 #ifdef MMDBG

@@ -49,34 +49,32 @@ Time slot   6
 write region=0 offset=280 value=100 PID=2
 print_pgtbl: 0 - 512
 00000000: 80000001
-	CPU 0: Put process  1 to run queue
-	CPU 0: Dispatched process  1
 00000004: 80000000
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 ===== PHYSICAL MEMORY AFTER ALLOCATION =====
 PID=1 - Region=1 - Address=00000000 - Size=100 byte
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
-	CPU 1: Put process  2 to run queue
-	CPU 1: Dispatched process  2
 Time slot   7
-=========invalid page access=========
-========fail to read========
 read region=1 offset=20 value=0 PID=1
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
+	CPU 1: Put process  2 to run queue
+	CPU 1: Dispatched process  2
 BYTE 00000114: 100
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
@@ -96,17 +94,17 @@ PID=2 - Region=4 - Address=00000200 - Size=900 byte
 print_pgtbl: 0 - 1536
 00000000: 80000001
 00000004: 80000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 	CPU 0: Put process  1 to run queue
 	CPU 0: Dispatched process  1
 =========invalid page access=========
 ========fail to write========
 write region=2 offset=20 value=20 PID=1
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
@@ -117,17 +115,17 @@ BYTE 00000128: 20
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot   9
-	CPU 1: Put process  2 to run queue
 =========invalid page access=========
+	CPU 1: Put process  2 to run queue
+	CPU 1: Dispatched process  2
 ========fail to read========
 read region=2 offset=20 value=0 PID=1
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
 ===== PHYSICAL MEMORY DUMP =====
-	CPU 1: Dispatched process  2
 BYTE 00000018: 100
 BYTE 00000114: 100
 BYTE 00000128: 20
@@ -137,10 +135,10 @@ read region=0 offset=280 value=100 PID=2
 print_pgtbl: 0 - 1536
 00000000: 80000001
 00000004: 80000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
@@ -148,22 +146,22 @@ BYTE 00000128: 20
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  10
-	CPU 0: Put process  1 to run queue
-	CPU 0: Dispatched process  1
 ===== PHYSICAL MEMORY AFTER DEALLOCATION =====
 PID=2 - Region=0
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
+00000016: 80000006
+00000020: 80000005
 =========invalid page access=========
 ========fail to write========
 write region=3 offset=20 value=10 PID=1
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
@@ -174,13 +172,13 @@ BYTE 00000128: 20
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  11
-=========invalid page access=========
-========fail to read========
 	CPU 1: Put process  2 to run queue
 	CPU 1: Dispatched process  2
+=========invalid page access=========
+========fail to read========
 read region=3 offset=20 value=0 PID=1
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 80000003
 00000012: 80000002
@@ -196,10 +194,10 @@ write region=0 offset=120 value=110 PID=2
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
@@ -207,18 +205,18 @@ BYTE 00000128: 20
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  12
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
 =========invalid page access=========
 ========fail to read========
 read region=0 offset=20 value=0 PID=2
-	CPU 0: Put process  1 to run queue
-	CPU 0: Dispatched process  1
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
@@ -228,28 +226,28 @@ BYTE 00000128: 20
 ===== PHYSICAL MEMORY AFTER DEALLOCATION =====
 PID=1 - Region=4
 print_pgtbl: 0 - 1024
-00000000: 00000001
+00000000: 80000004
 00000004: 00000000
 00000008: 00000003
 00000012: 00000002
 Time slot  13
-	CPU 0: Processed  1 has finished
 	CPU 1: Put process  2 to run queue
 	CPU 1: Dispatched process  2
 write region=4 offset=40 value=70 PID=2
 print_pgtbl: 0 - 1536
+	CPU 0: Processed  1 has finished
 00000000: 00000001
 00000004: 00000000
-	CPU 0 stopped
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
+	CPU 0 stopped
 BYTE 00000114: 100
 BYTE 00000128: 20
-BYTE 00000728: 70
+BYTE 00000828: 70
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  14
@@ -257,15 +255,15 @@ write region=4 offset=40 value=90 PID=2
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
 BYTE 00000128: 20
-BYTE 00000728: 90
+BYTE 00000828: 90
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  15
@@ -275,15 +273,15 @@ read region=4 offset=10 value=0 PID=2
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 80000007
-00000012: 80000006
-00000016: 80000005
-00000020: 80000004
+00000008: 80000008
+00000012: 80000007
+00000016: 80000006
+00000020: 80000005
 ===== PHYSICAL MEMORY DUMP =====
 BYTE 00000018: 100
 BYTE 00000114: 100
 BYTE 00000128: 20
-BYTE 00000728: 90
+BYTE 00000828: 90
 ===== PHYSICAL MEMORY END-DUMP =====
 ================================================================
 Time slot  16
@@ -292,10 +290,10 @@ PID=2 - Region=4
 print_pgtbl: 0 - 1536
 00000000: 00000001
 00000004: 00000000
-00000008: 00000007
-00000012: 00000006
-00000016: 00000005
-00000020: 00000004
+00000008: 00000008
+00000012: 00000007
+00000016: 00000006
+00000020: 00000005
 Time slot  17
 	CPU 1: Processed  2 has finished
 	CPU 1 stopped

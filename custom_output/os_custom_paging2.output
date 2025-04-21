@@ -1,0 +1,80 @@
+Process 0: input/proc/p7s
+Time slot   0
+ld_routine
+Time slot   1
+	Loaded a process at input/proc/p7s, PID: 1 PRIO: 10
+Time slot   2
+	CPU 0: Dispatched process  1
+===== PHYSICAL MEMORY AFTER ALLOCATION =====
+PID=1 - Region=0 - Address=00000000 - Size=300 byte
+print_pgtbl: 0 - 512
+00000000: 80000001
+00000004: 80000000
+Time slot   3
+write region=0 offset=40 value=90 PID=1
+print_pgtbl: 0 - 512
+00000000: 80000001
+00000004: 80000000
+===== PHYSICAL MEMORY DUMP =====
+BYTE 00000128: 90
+===== PHYSICAL MEMORY END-DUMP =====
+================================================================
+Time slot   4
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
+read region=0 offset=10 value=0 PID=1
+print_pgtbl: 0 - 512
+00000000: 80000001
+00000004: 80000000
+===== PHYSICAL MEMORY DUMP =====
+BYTE 00000128: 90
+===== PHYSICAL MEMORY END-DUMP =====
+================================================================
+Time slot   5
+===== PHYSICAL MEMORY AFTER DEALLOCATION =====
+PID=1 - Region=0
+print_pgtbl: 0 - 512
+00000000: 00000001
+00000004: 00000000
+Time slot   6
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
+=========invalid page access=========
+========fail to write========
+write region=0 offset=40 value=90 PID=1
+print_pgtbl: 0 - 512
+00000000: 00000001
+00000004: 00000000
+===== PHYSICAL MEMORY DUMP =====
+BYTE 00000128: 90
+===== PHYSICAL MEMORY END-DUMP =====
+================================================================
+Time slot   7
+===== PHYSICAL MEMORY AFTER ALLOCATION =====
+PID=1 - Region=0 - Address=00000000 - Size=300 byte
+print_pgtbl: 0 - 512
+00000000: 80000001
+00000004: 80000000
+Time slot   8
+	CPU 0: Put process  1 to run queue
+	CPU 0: Dispatched process  1
+write region=0 offset=40 value=90 PID=1
+print_pgtbl: 0 - 512
+00000000: 80000001
+00000004: 80000000
+===== PHYSICAL MEMORY DUMP =====
+BYTE 00000128: 90
+===== PHYSICAL MEMORY END-DUMP =====
+================================================================
+Time slot   9
+===== PHYSICAL MEMORY AFTER ALLOCATION =====
+PID=1 - Region=2 - Address=00000200 - Size=400 byte
+print_pgtbl: 0 - 1024
+00000000: 80000001
+00000004: 80000000
+00000008: 80000003
+00000012: 80000002
+Time slot  10
+	CPU 0: Processed  1 has finished
+	CPU 0 stopped
+

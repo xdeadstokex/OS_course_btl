@@ -75,6 +75,14 @@ int __alloc(struct pcb_t *caller, int vmaid, int rgid, int size, int *alloc_addr
  
     *alloc_addr = rgnode.rg_start;
 
+    // Missing page mapping
+    struct vm_rg_struct ret_rg;
+    int incpgnum = PAGING_PAGE_ALIGNSZ(size) / PAGING_PAGESZ;
+    if (vm_map_ram(caller, rgnode.rg_start, rgnode.rg_end, rgnode.rg_start, incpgnum, &ret_rg) < 0) {
+        pthread_mutex_unlock(&mmvm_lock);
+        return -1;
+    }
+
     printf("===== PHYSICAL MEMORY AFTER ALLOCATION =====\n");
     printf("PID=%d - Region=%d - Address=%08lx - Size=%d byte\n", caller->pid, rgid, rgnode.rg_start, size);
     print_pgtbl(caller, 0, -1);
@@ -137,59 +145,56 @@ regs.a3 = inc_sz;
  *
  */
 int __free(struct pcb_t *caller, int vmaid, int rgid){
-    if(rgid < 0 || rgid > PAGING_MAX_SYMTBL_SZ) return -1;
-    pthread_mutex_lock(&mmvm_lock);
+if(rgid < 0 || rgid > PAGING_MAX_SYMTBL_SZ) return -1;
+pthread_mutex_lock(&mmvm_lock);
 
-    struct vm_rg_struct *symrg = &caller->mm->symrgtbl[rgid];
+struct vm_rg_struct *symrg = &caller->mm->symrgtbl[rgid];
 
-    /* Validate region */
-    if (symrg->rg_start == 0 && symrg->rg_end == 0) {
-        pthread_mutex_unlock(&mmvm_lock);
-        return -1;
-    }
+/* Validate region */
+if (symrg->rg_start == 0 && symrg->rg_end == 0){
+pthread_mutex_unlock(&mmvm_lock);
+return -1;
+}
 
-    /* Remove page mappings */
-    for (uint32_t addr = symrg->rg_start; addr < symrg->rg_end; addr += PAGING_PAGESZ) {
-        uint32_t vpn = PAGING_PGN(addr);
-        uint32_t pte = caller->mm->pgd[vpn];
+/* Remove page mappings */
+for (uint32_t addr = symrg->rg_start; addr < symrg->rg_end; addr += PAGING_PAGESZ){
+uint32_t vpn = PAGING_PGN(addr);
+uint32_t pte = caller->mm->pgd[vpn];
 
-        if (pte & PAGING_PTE_PRESENT_MASK) {
-            int pfn = PAGING_PTE_FPN(pte);
-            struct framephy_struct *frame = malloc(sizeof(struct framephy_struct));
-            frame->fpn = pfn;
-            frame->fp_next = caller->mram->free_fp_list;
-            caller->mram->free_fp_list = frame;
-        }
+if (pte & PAGING_PTE_PRESENT_MASK){
+int pfn = PAGING_PTE_FPN(pte);
+MEMPHY_put_freefp(caller->mram, pfn);
+}
 
-        caller->mm->pgd[vpn] &= ~PAGING_PTE_PRESENT_MASK;
-    }
+caller->mm->pgd[vpn] &= ~PAGING_PTE_PRESENT_MASK;
+}
 
-    /* Reset symbol table entry */
-    struct vm_rg_struct *rgnode = malloc(sizeof(struct vm_rg_struct));
-    if (rgnode == NULL){
-        pthread_mutex_unlock(&mmvm_lock);
-        return -1;
-    }
+/* Reset symbol table entry */
+struct vm_rg_struct *rgnode = malloc(sizeof(struct vm_rg_struct));
+if (rgnode == NULL){
+pthread_mutex_unlock(&mmvm_lock);
+return -1;
+}
 
-    rgnode->rg_start = symrg->rg_start;
-    rgnode->rg_end = symrg->rg_end;
-    rgnode->rg_next = NULL;
+rgnode->rg_start = symrg->rg_start;
+rgnode->rg_end = symrg->rg_end;
+rgnode->rg_next = NULL;
 
-    symrg->rg_start = 0;
-    symrg->rg_end = 0;
+symrg->rg_start = 0;
+symrg->rg_end = 0;
 
-    if (enlist_vm_freerg_list(caller->mm, rgnode) != 0) {
-        free(rgnode);
-        pthread_mutex_unlock(&mmvm_lock);
-        return -1;
-    }
+if (enlist_vm_freerg_list(caller->mm, rgnode) != 0) {
+free(rgnode);
+pthread_mutex_unlock(&mmvm_lock);
+return -1;
+}
 
-    printf("===== PHYSICAL MEMORY AFTER DEALLOCATION =====\n");
-    printf("PID=%d - Region=%d\n", caller->pid, rgid);
-    print_pgtbl(caller, 0, -1);
+printf("===== PHYSICAL MEMORY AFTER DEALLOCATION =====\n");
+printf("PID=%d - Region=%d\n", caller->pid, rgid);
+print_pgtbl(caller, 0, -1);
 
-    pthread_mutex_unlock(&mmvm_lock);
-    return 0;
+pthread_mutex_unlock(&mmvm_lock);
+return 0;
 }
 
 
@@ -519,8 +524,7 @@ return 0;
  */
 int get_free_vmrg_area(struct pcb_t *caller, int vmaid, int size, struct vm_rg_struct *newrg){
 if(caller == NULL || newrg == NULL) return -1;
-// debug
-// printf("The value of vmaid is: %d\n", vmaid);
+
 struct vm_area_struct *cur_vma = get_vma_by_num(caller->mm, vmaid);
 if (cur_vma == NULL) return -1;
 struct vm_rg_struct *rgit = cur_vma->vm_freerg_list;
@@ -539,8 +543,7 @@ if(rgit->rg_end - rgit->rg_start >= size){
 newrg->rg_start = rgit->rg_start;
 newrg->rg_end = rgit->rg_start + size;
 
-// Update the used region
-//if not used all free space
+// Update the used region if not used all free space
 if (rgit->rg_end - newrg->rg_end > 0){
 rgit->rg_start = newrg->rg_end;
 }
