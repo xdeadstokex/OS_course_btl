@@ -22,7 +22,7 @@ BYTE 00000128: 90
 Time slot   4
 	CPU 0: Put process  1 to run queue
 	CPU 0: Dispatched process  1
-read region=0 offset=10 value=0 PID=1
+read region=0 offset=40 value=90 PID=1
 print_pgtbl: 0 - 512
 00000000: 80000001
 00000004: 80000000
@@ -77,4 +77,3 @@ print_pgtbl: 0 - 1024
 Time slot  10
 	CPU 0: Processed  1 has finished
 	CPU 0 stopped
-
